@@ -171,7 +171,7 @@ docker compose --profile ui up -d
 | Make target       | Docker CLI                                    | Podman built-in                              | podman-compose                               |
 | ----------------- | --------------------------------------------- | -------------------------------------------- | -------------------------------------------- |
 | `compose-up`      | `docker compose -f docker-compose.yml up -d`  | `podman compose -f docker-compose.yml up -d` | `podman-compose -f docker-compose.yml up -d` |
-| `compose-restart` | `docker compose up -d --pull=missing --build` | idem                                         | idem                                         |
+| `compose-restart` | `docker compose pull && docker compose build` | idem                                         | idem                                         |
 | `compose-logs`    | `docker compose logs -f`                      | `podman compose logs -f`                     | `podman-compose logs -f`                     |
 | `compose-ps`      | `docker compose ps`                           | `podman compose ps`                          | `podman-compose ps`                          |
 | `compose-stop`    | `docker compose stop`                         | `podman compose stop`                        | `podman-compose stop`                        |
@@ -385,15 +385,15 @@ For advanced TLS configuration (end-to-end encryption, custom ciphers, etc.), se
 
 ## 🔄 Lifecycle cheatsheet
 
-| Task               | Make                   | Manual (engine-agnostic)                        |
-| ------------------ | ---------------------- | ----------------------------------------------- |
-| Start / create     | `make compose-up`      | `<engine> compose up -d`                        |
-| Re-create changed  | `make compose-restart` | `<engine> compose up -d --pull=missing --build` |
-| Tail logs          | `make compose-logs`    | `<engine> compose logs -f`                      |
-| Shell into gateway | `make compose-shell`   | `<engine> compose exec gateway /bin/sh`         |
-| Stop               | `make compose-stop`    | `<engine> compose stop`                         |
-| Remove containers  | `make compose-down`    | `<engine> compose down`                         |
-| **Nuke volumes**   | `make compose-clean`   | `<engine> compose down -v`                      |
+| Task               | Make                   | Manual (engine-agnostic)                          |
+| ------------------ | ---------------------- | ------------------------------------------------- |
+| Start / create     | `make compose-up`      | `<engine> compose up -d`                          |
+| Re-create changed  | `make compose-restart` | `<engine> compose pull && <engine> compose build` |
+| Tail logs          | `make compose-logs`    | `<engine> compose logs -f`                        |
+| Shell into gateway | `make compose-shell`   | `<engine> compose exec gateway /bin/sh`           |
+| Stop               | `make compose-stop`    | `<engine> compose stop`                           |
+| Remove containers  | `make compose-down`    | `<engine> compose down`                           |
+| **Nuke volumes**   | `make compose-clean`   | `<engine> compose down -v`                        |
 
 `<engine>` = `docker`, `podman`, or `podman-compose` as shown earlier.
 
